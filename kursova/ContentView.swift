@@ -39,14 +39,22 @@ struct ContentView: View {
                 
                 HStack {
                     Button(action: {
-                        vm.addCurrentPalette()
+                        vm.addCurrentColorToFavorite()
                     }) {
                         Image(systemName: "heart.fill")
                             .resizable()
                             .frame(width: 30, height: 30)
-                            .foregroundColor(.red)
+                            .foregroundColor(vm.isCurrentColorFavorite() ? .red : .white)
+                            .overlay(
+                                Image(systemName: "heart")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(vm.isCurrentColorFavorite() ? .clear : .black)
+                            )
                             .padding(.leading, 20)
                     }
+
+
                     
                     Spacer()
                     
@@ -95,9 +103,13 @@ struct ContentView: View {
             .sheet(isPresented: $showFavorites) {
                 FavoritesView(vm: vm)
             }
+            .onAppear {
+                vm.generateRandomColor()
+            }
         }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

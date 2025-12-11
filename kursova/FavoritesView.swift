@@ -25,16 +25,19 @@ struct FavoritesView: View {
     @ObservedObject var vm: ColorViewModel
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
-                ForEach(vm.favoritePalettes.indices, id: \.self) { index in
-                    PaletteView(colors: vm.favoritePalettes[index])  // Використовуємо PaletteView тут
+                ForEach(vm.favoritePalettes, id: \.self) { palette in
+                    PaletteView(colors: palette)
+                        .padding(.vertical, 5)
                 }
             }
             .navigationTitle("Улюблені палітри")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
+
 
 
 
