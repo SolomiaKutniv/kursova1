@@ -7,36 +7,40 @@
 
 import SwiftUI
 
-struct PaletteView: View {
-    let colors: [String]
-
-    var body: some View {
-        HStack {
-            ForEach(colors, id: \.self) { hex in
-                Color(hex: hex)
-                    .frame(width: 60, height: 60)
-                    .cornerRadius(8)
-            }
-        }
-    }
-}
-
 struct FavoritesView: View {
-    @ObservedObject var vm: ColorViewModel
-    
+    @Binding var pairs: [ColorPair]
+
     var body: some View {
         NavigationStack {
             List {
-                ForEach(vm.favoritePalettes, id: \.self) { palette in
-                    PaletteView(colors: palette)
-                        .padding(.vertical, 5)
+                ForEach(pairs, id: \.self) { pair in
+                    HStack {
+                        Color(hex: pair.userHex)
+                        Color(hex: pair.randomHex)
+                    }
+                    .frame(height: 60)
+                    .cornerRadius(8)
+                }
+                .onDelete { indexSet in
+                    pairs.remove(atOffsets: indexSet)
+                    if let data = try? JSONEncoder().encode(pairs) {
+                        UserDefaults.standard.set(data, forKey: "fav_pairs")
+                    }
                 }
             }
-            .navigationTitle("Улюблені палітри")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Улюблені поєднання")
+            .toolbar {
+                EditButton()
+            }
         }
     }
 }
+
+
+
+
+
+
 
 
 

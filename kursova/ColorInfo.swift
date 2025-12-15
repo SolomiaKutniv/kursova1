@@ -8,9 +8,13 @@
 import Foundation
 
 struct ColorInfo: Codable {
+    let name: Name
     let hex: Hex
     let rgb: RGB
-    let name: Name
+}
+
+struct Name: Codable {
+    let value: String
 }
 
 struct Hex: Codable {
@@ -21,8 +25,15 @@ struct RGB: Codable {
     let value: String
 }
 
-struct Name: Codable {
-    let value: String
+struct ColorPair: Codable, Hashable {
+    let userHex: String
+    let randomHex: String
 }
+
+
+
+
+
+
 
 
